@@ -28,4 +28,7 @@
         <attr name="wheel_font_path" format="string" />
         <attr name="wheel_padding_sides" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="WheelDatePicker">
+        <attr name="wheel_date_custom_view" format="reference"/>
+    </declare-styleable>
 </resources>

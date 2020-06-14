@@ -1,6 +1,7 @@
 package com.aigestudio.wheelpicker.widgets;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -40,8 +41,9 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
 
     public WheelDatePicker(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        LayoutInflater.from(context).inflate(R.layout.view_wheel_date_picker, this);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WheelDatePicker);
+        LayoutInflater.from(context).inflate(a.getResourceId(R.styleable.WheelDatePicker_wheel_date_custom_view, R.layout.view_wheel_date_picker), this);
+        a.recycle();
 
         mPickerYear = (WheelYearPicker) findViewById(R.id.wheel_date_picker_year);
         mPickerMonth = (WheelMonthPicker) findViewById(R.id.wheel_date_picker_month);
