@@ -296,6 +296,8 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
      */
     private String fontPath;
 
+    private int mTextSidePadding;
+
     private boolean isDebug;
 
     public WheelPicker(Context context) {
@@ -317,6 +319,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
         mTextMaxWidthPosition =
                 a.getInt(R.styleable.WheelPicker_wheel_maximum_width_text_position, -1);
         mMaxWidthText = a.getString(R.styleable.WheelPicker_wheel_maximum_width_text);
+        mTextSidePadding = a.getDimensionPixelSize(R.styleable.WheelPicker_wheel_padding_sides, 0);
         mSelectedItemTextColor = a.getColor
                 (R.styleable.WheelPicker_wheel_selected_item_text_color, -1);
         mItemTextColor = a.getColor(R.styleable.WheelPicker_wheel_item_text_color, 0xFF888888);
@@ -405,6 +408,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
                 mTextMaxWidth = Math.max(mTextMaxWidth, width);
             }
         }
+        mTextMaxWidth += mTextSidePadding*2;
         Paint.FontMetrics metrics = mPaint.getFontMetrics();
         mTextMaxHeight = (int) (metrics.bottom - metrics.top);
     }
