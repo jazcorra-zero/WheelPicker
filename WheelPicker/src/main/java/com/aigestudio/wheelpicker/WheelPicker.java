@@ -6,7 +6,10 @@ import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -75,7 +78,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
 
     private Rect mRectDrawn;
     private Rect mRectIndicatorHead, mRectIndicatorFoot;
-    private Rect mRectCurrentItem;
+    private RectF mRectCurrentItem;
 
     private Camera mCamera;
     private Matrix mMatrixRotate, mMatrixDepth;
@@ -249,6 +252,14 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
      */
     private boolean hasCurtain;
 
+
+    /**
+     * Added support for curtain with rounded corners
+     *
+     * @see #setCurtainRadius(int)
+     */
+    private int mCurtainRadius = 0;
+
     /**
      * 是否显示空气感效果
      *
@@ -317,6 +328,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
         mIndicatorSize = a.getDimensionPixelSize(R.styleable.WheelPicker_wheel_indicator_size,
                 getResources().getDimensionPixelSize(R.dimen.WheelIndicatorSize));
         hasCurtain = a.getBoolean(R.styleable.WheelPicker_wheel_curtain, false);
+        mCurtainRadius = a.getDimensionPixelSize(R.styleable.WheelPicker_wheel_curtain_radius, 0);
         mCurtainColor = a.getColor(R.styleable.WheelPicker_wheel_curtain_color, 0x88FFFFFF);
         hasAtmospheric = a.getBoolean(R.styleable.WheelPicker_wheel_atmospheric, false);
         isCurved = a.getBoolean(R.styleable.WheelPicker_wheel_curved, false);
@@ -357,7 +369,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
         mRectIndicatorHead = new Rect();
         mRectIndicatorFoot = new Rect();
 
-        mRectCurrentItem = new Rect();
+        mRectCurrentItem = new RectF();
 
         mCamera = new Camera();
 
@@ -534,6 +546,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
         if (!hasCurtain && mSelectedItemTextColor == -1) return;
         mRectCurrentItem.set(mRectDrawn.left, mWheelCenterY - mHalfItemHeight, mRectDrawn.right,
                 mWheelCenterY + mHalfItemHeight);
+
     }
 
     @Override
@@ -659,8 +672,9 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
         if (hasCurtain) {
             mPaint.setColor(mCurtainColor);
             mPaint.setStyle(Paint.Style.FILL);
-            canvas.drawRect(mRectCurrentItem, mPaint);
+            canvas.drawRoundRect(mRectCurrentItem, mCurtainRadius, mCurtainRadius, mPaint);
         }
+
         // 是否需要绘制指示器
         // Need to draw indicator or not
         if (hasIndicator) {
@@ -1052,6 +1066,18 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
     @Override
     public boolean hasCurtain() {
         return hasCurtain;
+    }
+
+    @Override
+    public void setCurtainRadius(int radius) {
+        this.mCurtainRadius = radius;
+        computeCurrentItemRect();
+        invalidate();
+    }
+
+    @Override
+    public int getCurtainRadius() {
+        return mCurtainRadius;
     }
 
     @Override

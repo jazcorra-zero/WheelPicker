@@ -335,6 +335,21 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
     }
 
     @Override
+    public void setCurtainRadius(int radius) {
+        mPickerYear.setCurtainRadius(radius);
+        mPickerMonth.setCurtainRadius(radius);
+        mPickerDay.setCurtainRadius(radius);
+    }
+
+    @Override
+    public int getCurtainRadius() {
+        if (mPickerYear.getCurtainRadius() == mPickerMonth.getCurtainRadius() &&
+                mPickerMonth.getCurtainRadius() == mPickerDay.getCurtainRadius())
+            return mPickerYear.getCurtainRadius();
+        throw new RuntimeException("Can not get curtain radius size correctly from WheelDatePicker!");
+    }
+
+    @Override
     public int getCurtainColor() {
         if (mPickerYear.getCurtainColor() == mPickerMonth.getCurtainColor() &&
                 mPickerMonth.getCurtainColor() == mPickerDay.getCurtainColor())

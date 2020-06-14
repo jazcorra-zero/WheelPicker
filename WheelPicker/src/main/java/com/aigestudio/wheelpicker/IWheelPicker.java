@@ -415,6 +415,23 @@ public interface IWheelPicker {
     boolean hasCurtain();
 
     /**
+     * Added support for rounded corners in current item curtain
+     * <p>
+     * Set corner radius
+     * Unit in px
+     * @param radius size in pixels for corner radius, default 0px
+     */
+    void setCurtainRadius(int radius);
+
+    /**
+     * Added support for rounded corners in current item curtain
+     * <p>
+     * Get current curtain radius in pixels
+     * @return corner radius in pixels
+     */
+    int getCurtainRadius();
+
+    /**
      * 获取滚轮选择器幕布颜色
      * <p>
      * Get color of curtain
